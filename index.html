@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>むし歯なぜなぜクイズ！🦷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'M PLUS Rounded 1c', 'Rounded Mplus 1c', sans-serif;
+      background: #F8F9FF;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #333;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ========== SCREENS ========== */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      flex-direction: column;
+      align-items: center;
+    }
+    .screen.active {
+      display: flex;
+      animation: fadeSlideIn 0.3s ease;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== TITLE SCREEN ========== */
+    #screen-title {
+      background: linear-gradient(175deg, #29B6F6 0%, #4FC3F7 35%, #B3E5FC 70%, #F8F9FF 100%);
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bk-float {
+      position: absolute;
+      font-size: 30px;
+      opacity: 0.55;
+      pointer-events: none;
+      animation: floatBk var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+    }
+    .bk-float:nth-child(1) { top: 8%;  left: 8%;  --dur: 4.2s; --delay: 0s;   font-size: 26px; }
+    .bk-float:nth-child(2) { top: 12%; right: 12%; --dur: 3.8s; --delay: 1.1s; font-size: 20px; }
+    .bk-float:nth-child(3) { top: 62%; left: 4%;  --dur: 5s;   --delay: 2s;   font-size: 22px; }
+    .bk-float:nth-child(4) { top: 70%; right: 8%; --dur: 3.5s; --delay: 0.7s; font-size: 28px; }
+
+    @keyframes floatBk {
+      0%, 100% { transform: translateY(0) rotate(-5deg); }
+      50%       { transform: translateY(-22px) rotate(6deg); }
+    }
+
+    .title-haku {
+      font-size: 88px;
+      margin-bottom: 12px;
+      animation: floatHaku 3s ease-in-out infinite;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+    }
+    @keyframes floatHaku {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    .title-heading {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 2px 4px 0 rgba(0,0,0,0.12);
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .title-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.92);
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: block;
+      width: 100%;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 20px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+      line-height: 1.4;
+      padding: 18px 20px;
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.95) translateY(3px) !important; }
+
+    .btn-start {
+      background: #FFB300;
+      color: #fff;
+      box-shadow: 0 6px 0 #E65100, 0 8px 16px rgba(0,0,0,0.22);
+      max-width: 300px;
+      font-size: 22px;
+    }
+    .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #E65100, 0 10px 18px rgba(0,0,0,0.22); }
+
+    .btn-answer {
+      background: #fff;
+      color: #333;
+      border: 3px solid #4FC3F7;
+      box-shadow: 0 5px 0 #0288D1, 0 6px 10px rgba(0,0,0,0.1);
+      min-height: 58px;
+      font-size: 18px;
+      white-space: pre-line;
+    }
+    .btn-answer:hover:not(:disabled) {
+      background: #E1F5FE;
+      transform: translateY(-2px);
+    }
+    .btn-answer.correct-ans {
+      background: #4CAF50;
+      color: #fff;
+      border-color: #2E7D32;
+      box-shadow: 0 4px 0 #1B5E20;
+    }
+    .btn-answer.wrong-ans {
+      background: #EF5350;
+      color: #fff;
+      border-color: #B71C1C;
+      box-shadow: 0 4px 0 #7F0000;
+    }
+    .btn-answer.dimmed {
+      opacity: 0.38;
+    }
+    .btn-answer:disabled { cursor: default; }
+
+    .btn-white-orange {
+      background: #fff;
+      color: #E65100;
+      box-shadow: 0 5px 0 #FFB300, 0 7px 14px rgba(0,0,0,0.18);
+      max-width: 300px;
+    }
+    .btn-white-orange:hover { transform: translateY(-2px); }
+
+    .btn-white-green {
+      background: #fff;
+      color: #2E7D32;
+      box-shadow: 0 5px 0 #66BB6A, 0 7px 14px rgba(0,0,0,0.18);
+      max-width: 320px;
+    }
+    .btn-white-green:hover { transform: translateY(-2px); }
+
+    /* ========== STAGE SELECT ========== */
+    #screen-stage-select {
+      padding: 36px 20px 40px;
+      background: #F8F9FF;
+    }
+    .select-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #4FC3F7;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    #stage-cards { width: 100%; }
+
+    .stage-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.15s, box-shadow 0.15s;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .stage-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.13); }
+    .stage-card.done { border-color: #66BB6A; }
+
+    .sc-emoji { font-size: 42px; flex-shrink: 0; }
+    .sc-info { flex: 1; }
+    .sc-num  { font-size: 12px; font-weight: 700; color: #aaa; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .sc-name { font-size: 19px; font-weight: 800; color: #333; }
+    .sc-score { font-size: 13px; font-weight: 700; margin-top: 4px; color: #bbb; }
+    .sc-score.done-score { color: #66BB6A; }
+    .sc-badge { font-size: 26px; }
+
+    /* ========== QUIZ SCREEN ========== */
+    #screen-quiz { padding: 0; }
+
+    .quiz-header {
+      width: 100%;
+      background: #fff;
+      padding: 14px 20px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      flex-shrink: 0;
+    }
+    .quiz-progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #E3F2FD;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #4FC3F7, #29B6F6);
+      transition: width 0.45s ease;
+    }
+
+    .quiz-body {
+      flex: 1;
+      width: 100%;
+      padding: 22px 18px 32px;
+      overflow-y: auto;
+    }
+
+    .bk-deco {
+      position: fixed;
+      top: 72px;
+      right: 14px;
+      font-size: 30px;
+      opacity: 0.2;
+      pointer-events: none;
+      animation: floatBk 3.5s ease-in-out infinite;
+    }
+
+    .question-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 26px 18px 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .q-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4FC3F7;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+    .q-text {
+      font-size: 21px;
+      font-weight: 700;
+      color: #222;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    .answers-ox {
+      display: flex;
+      gap: 12px;
+    }
+    .answers-ox .btn-answer {
+      flex: 1;
+      font-size: 42px;
+      padding: 20px 10px;
+      font-weight: 700;
+    }
+    .answers-ox .btn-answer:nth-child(1) { color: #4CAF50; }
+    .answers-ox .btn-answer:nth-child(2) { color: #EF5350; }
+
+    .answers-2choice {
+      display: flex;
+      gap: 12px;
+    }
+    .answers-2choice .btn-answer {
+      flex: 1;
+      font-size: 15px;
+      padding: 16px 10px;
+    }
+
+    .answers-4choice {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .answers-4choice .btn-answer {
+      text-align: left;
+      font-size: 17px;
+    }
+
+    /* ========== FEEDBACK OVERLAY ========== */
+    .feedback-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.45);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .feedback-overlay.show { display: flex; }
+
+    .feedback-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 30px 22px 26px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+      animation: fadeSlideIn 0.3s ease;
+    }
+    .fb-haku { font-size: 48px; margin-bottom: 4px; }
+    .fb-mark {
+      font-size: 76px;
+      line-height: 1;
+      margin-bottom: 10px;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .fb-label {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .fb-label.ok  { color: #4CAF50; }
+    .fb-label.ng  { color: #EF5350; }
+    .fb-explain {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.75;
+      text-align: left;
+      background: #F8F9FF;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0);   opacity: 0; }
+      70%  { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ========== STAGE CLEAR ========== */
+    #screen-stage-clear {
+      background: linear-gradient(160deg, #FFB300 0%, #FF8F00 100%);
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sc-stars {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .star {
+      font-size: 60px;
+      opacity: 0;
+      transform: scale(0);
+      animation: none;
+    }
+    .star.pop {
+      animation: starPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes starPop {
+      0%   { transform: scale(0);    opacity: 0; }
+      70%  { transform: scale(1.35); opacity: 1; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    .sc-clear-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 2px 4px 0 rgba(0,0,0,0.15);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .sc-clear-score {
+      font-size: 22px;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 42px;
+      text-align: center;
+    }
+
+    /* ========== ALL CLEAR ========== */
+    #screen-all-clear {
+      background: linear-gradient(160deg, #43A047 0%, #1B5E20 100%);
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ac-haku {
+      font-size: 86px;
+      animation: floatHaku 3s ease-in-out infinite;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.2));
+      margin-bottom: 14px;
+    }
+    .ac-beaten {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 34px;
+      margin-bottom: 18px;
+    }
+    .ac-beaten span {
+      display: inline-block;
+      filter: grayscale(1);
+      opacity: 0.45;
+      animation: tilt 2s ease-in-out infinite alternate;
+    }
+    .ac-beaten span:nth-child(1) { transform: rotate(25deg);  --base: 25deg;  animation-delay: 0s;   }
+    .ac-beaten span:nth-child(2) { transform: rotate(-18deg); --base: -18deg; animation-delay: 0.4s; }
+    .ac-beaten span:nth-child(3) { transform: rotate(40deg);  --base: 40deg;  animation-delay: 0.8s; }
+    @keyframes tilt {
+      from { transform: rotate(var(--base)) translateY(0); }
+      to   { transform: rotate(calc(var(--base) + 10deg)) translateY(-6px); }
+    }
+
+    .ac-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 2px 4px 0 rgba(0,0,0,0.15);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .ac-sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.88);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .ac-score-box {
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 18px 40px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .ac-score-num {
+      font-size: 52px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .ac-score-lbl {
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 4px;
+    }
+    .ac-message {
+      font-size: 15px;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      line-height: 1.75;
+      white-space: pre-line;
+      margin-bottom: 30px;
+    }
+
+    /* ========== CONFETTI ========== */
+    #confetti-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      overflow: hidden;
+    }
+    .conf {
+      position: absolute;
+      top: -12px;
+      border-radius: 2px;
+      animation: confFall linear forwards;
+    }
+    @keyframes confFall {
+      0%   { transform: translateY(0) rotate(0deg);    opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Confetti layer -->
+<div id="confetti-wrap"></div>
+
+<!-- ===== FEEDBACK OVERLAY ===== -->
+<div class="feedback-overlay" id="feedback-overlay">
+  <div class="feedback-card">
+    <div class="fb-haku" id="fb-haku">🦷</div>
+    <div class="fb-mark"  id="fb-mark"></div>
+    <div class="fb-label" id="fb-label"></div>
+    <div class="fb-explain" id="fb-explain"></div>
+    <button class="btn btn-start" id="btn-next" style="max-width:100%;">つぎへ ▶</button>
+  </div>
+</div>
+
+<!-- ===== TITLE ===== -->
+<div class="screen active" id="screen-title">
+  <span class="bk-float">🦠</span>
+  <span class="bk-float">🦠</span>
+  <span class="bk-float">🦠</span>
+  <span class="bk-float">🦠</span>
+
+  <div class="title-haku">🦷</div>
+  <div class="title-heading">むし歯なぜなぜ<br>クイズ！</div>
+  <div class="title-sub">🦠 バイキンのひみつを知ろう！</div>
+  <button class="btn btn-start" onclick="goToStageSelect()">🎮 スタート！</button>
+</div>
+
+<!-- ===== STAGE SELECT ===== -->
+<div class="screen" id="screen-stage-select">
+  <div class="select-title">🗺️ ステージをえらぼう！</div>
+  <div id="stage-cards"></div>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-header">
+    <div class="quiz-progress-info">
+      <span id="quiz-stage-label">Stage 1</span>
+      <span id="quiz-q-label">問 1 / 5</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+  <div class="bk-deco">🦠</div>
+  <div class="quiz-body">
+    <div class="question-card">
+      <div class="q-label" id="q-num-label">Q1</div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+    <div id="answers-area"></div>
+  </div>
+</div>
+
+<!-- ===== STAGE CLEAR ===== -->
+<div class="screen" id="screen-stage-clear">
+  <div class="sc-stars" id="sc-stars">
+    <span class="star">⭐</span>
+    <span class="star">⭐</span>
+    <span class="star">⭐</span>
+  </div>
+  <div class="sc-clear-title" id="sc-title">Stage 1 クリア！ 🎉</div>
+  <div class="sc-clear-score" id="sc-score">5 / 5 もん せいかい！</div>
+  <button class="btn btn-white-orange" id="btn-stage-next">つぎへ ▶</button>
+</div>
+
+<!-- ===== ALL CLEAR ===== -->
+<div class="screen" id="screen-all-clear">
+  <div class="ac-beaten">
+    <span>🦠</span><span>🦠</span><span>🦠</span>
+  </div>
+  <div class="ac-haku">🦷</div>
+  <div class="ac-title">🎉 ぜんぶクリア！！</div>
+  <div class="ac-sub">バイキンをたいじしたよ！</div>
+  <div class="ac-score-box">
+    <div class="ac-score-num" id="ac-score-num">0 / 15</div>
+    <div class="ac-score-lbl">せいかい</div>
+  </div>
+  <div class="ac-message" id="ac-message"></div>
+  <button class="btn btn-white-green" onclick="goToTitle()">🏠 タイトルにもどる</button>
+</div>
+
+<script>
+/* ======================================================
+   QUIZ DATA
+   ====================================================== */
+const STAGES = [
+  {
+    num: 1,
+    title: 'むし歯のひみつ',
+    emoji: '🦠',
+    borderColor: '#AB47BC',
+    questions: [
+      {
+        type: 'ox',
+        text: 'むし歯になるのはバイキンのせい？',
+        answer: 0,
+        expl: '「ミュータンス菌」という特別なバイキンが口にいて、砂糖を食べて「酸（さん）」を出します。この酸が歯を溶かしてむし歯にします。'
+      },
+      {
+        type: '4choice',
+        text: 'むし歯菌が一番好きなものは？',
+        options: ['① 砂糖', '② 塩', '③ 野菜', '④ 辛いもの'],
+        answer: 0,
+        expl: 'むし歯菌は甘いもの（砂糖）が大好き！砂糖を食べると酸を出して歯を攻撃します。'
+      },
+      {
+        type: '4choice',
+        text: '歯を溶かしているのは何？',
+        options: ['① バイキンそのもの', '② 酸（さん）', '③ 砂糖', '④ 歯ブラシ'],
+        answer: 1,
+        expl: 'むし歯菌は砂糖を食べると「うんち」として酸（さん）を出します！このバイキンのうんちが歯のカルシウムを溶かしてむし歯にします。きたな〜い！だから砂糖が口の中に残らないよう歯みがきが大事なんです。'
+      },
+      {
+        type: 'ox',
+        text: 'むし歯菌がいなければ\nむし歯にならない？',
+        answer: 0,
+        expl: 'むし歯菌ゼロの人はむし歯になりません！赤ちゃんは生まれた時むし歯菌ゼロ。大人からうつることがほとんどです。'
+      },
+      {
+        type: '4choice',
+        text: '食事のあと、むし歯菌が一番元気に酸を出す「危険タイム」は何分くらい？',
+        options: ['① 5分', '② 20〜30分', '③ 2時間', '④ 1日中'],
+        answer: 1,
+        expl: '食事のあと約20〜30分、むし歯菌が猛烈に酸を出しています。この「危険タイム」のあとに歯みがきするのがベスト！'
+      },
+      {
+        type: '4choice',
+        text: 'むし歯菌が「うんち（酸）」を作るのに\n必要なものは？',
+        options: ['① 水', '② 砂糖（甘いもの）', '③ 塩', '④ 空気'],
+        answer: 1,
+        expl: 'むし歯菌が砂糖を食べるとうんち（酸）が出ます。砂糖がなければうんちも出ません！甘いものを食べたあとはすぐに歯みがきして、バイキンのご飯を取り上げよう！'
+      },
+      {
+        type: 'ox',
+        text: 'むし歯菌（バイキン）は\n人から人にうつる？',
+        answer: 0,
+        expl: 'むし歯菌はつば（唾液）でうつります！赤ちゃんの頃に大人のスプーンや箸からうつることが多いです。でもきちんと歯みがきしていれば、うつっても増えにくいので安心して！'
+      }
+    ]
+  },
+  {
+    num: 2,
+    title: 'おやつどっちどっち',
+    emoji: '🍬',
+    borderColor: '#FFB300',
+    questions: [
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['くろくてつめた〜い\nあわあわのジュース🫧', 'ぎゅうにゅう🥛'],
+        answer: 0,
+        expl: 'あわあわのお飲み物は砂糖がたっぷり＆酸性！歯にダブルパンチです。牛乳はカルシウムたっぷりで歯にやさしいです。'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['チーズ🧀', 'ねばねばくっつく\nキャンディー🍬'],
+        answer: 1,
+        expl: 'ねばねばするお菓子は歯にくっついて長い時間砂糖が残ります。チーズはカルシウムが多くてむし歯になりにくい！'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['あまずっぱい\nオレンジのジュース🍊', 'むぎちゃ🍵'],
+        answer: 0,
+        expl: '果汁100%でも「果糖（かとう）」という天然の糖分がたっぷり！砂糖と違う糖分でも、むし歯菌はちゃんと食べてうんち（酸）を出します。「砂糖ゼロ」でも油断禁物！麦茶は糖分ゼロで歯にやさしいです。'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['しょうゆのおせんべい🍘', 'やわらかくてあま〜い\n茶色のチョコ系おかし🍫'],
+        answer: 1,
+        expl: 'チョコ系のお菓子は砂糖が多く歯にくっつきやすいです。おせんべいは砂糖が少なめ。でも食べたらどちらも歯みがきしてね！'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['カラフルなグミ🐻', 'ナッツ（くるみ・アーモンド）🥜'],
+        answer: 0,
+        expl: 'グミはねばねばして歯のすき間に残りやすい！ナッツは糖分が少なくむし歯になりにくいですが、かみ砕くので食べすぎ注意。'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['おみず💧', '白くてあまい\n体にいいイメージの乳酸菌のみもの🥛'],
+        answer: 1,
+        expl: '乳酸菌飲料は腸にいいイメージだけど、砂糖がたっぷり入っています！むし歯菌のエサになるので飲んだあとは歯みがき必須。お水は糖分ゼロで、歯にとって一番やさしい飲み物です。'
+      },
+      {
+        type: '2choice',
+        text: 'どっちがむし歯になりやすい？',
+        options: ['ふわふわの白いパン🍞', 'かたゆでたまご🥚'],
+        answer: 0,
+        expl: 'パンは歯にくっつきやすく、でんぷんが口の中で糖に変わってむし歯菌のエサになります。たまごは糖分がほぼゼロ！おかずとしておすすめです。'
+      }
+    ]
+  },
+  {
+    num: 3,
+    title: '歯みがきマスター',
+    emoji: '🪥',
+    borderColor: '#66BB6A',
+    questions: [
+      {
+        type: '4choice',
+        text: '歯みがきの一番の目的は？',
+        options: ['① 歯をピカピカにする', '② むし歯菌を口の外に出す', '③ 口をさっぱりさせる', '④ 歯を硬くする'],
+        answer: 1,
+        expl: '歯みがきの目的は「むし歯菌のかたまり（プラーク）を歯からはがして外に出すこと」！ぬらすだけでなく、ちゃんとこすらないとバイキンは取れません。'
+      },
+      {
+        type: '4choice',
+        text: 'むし歯菌が一番たまりやすい場所は？',
+        options: ['① 前歯の表', '② 歯と歯ぐきの境目', '③ 舌の上', '④ ほっぺの内側'],
+        answer: 1,
+        expl: '歯と歯ぐきの「境目」はバイキンが一番集まる場所！歯ブラシを45度に傾けてやさしく小刻みにみがこう。'
+      },
+      {
+        type: '4choice',
+        text: '夜ねる前の歯みがきが\n一番大事な理由は？',
+        options: ['① 夜の方が時間があるから', '② ねている間はつばが減るから', '③ 夜の方がバイキンが増えやすいから', '④ 起きてる時と変わらない'],
+        answer: 1,
+        expl: 'つば（唾液）はむし歯菌をやっつける力があります！でも寝ている間はつばが減って口の中がバイキン天国に。だから寝る前の歯みがきが最重要！'
+      },
+      {
+        type: '4choice',
+        text: 'フッ素入り歯みがき粉の\n効果は？',
+        options: ['① 歯を白くする', '② 口が爽やかになる', '③ 歯を強くして酸に溶けにくくする', '④ バイキンを全部殺す'],
+        answer: 2,
+        expl: 'フッ素は歯の表面を強くして、酸に溶けにくくする力があります。むし歯菌を直接やっつけるわけじゃないけど、歯を守る「よろい」になってくれます！'
+      },
+      {
+        type: '4choice',
+        text: '歯みがきしても「みがけていないサイン」はどれ？',
+        options: ['① 歯がツルツルする', '② 歯がザラザラ・ネバネバしている', '③ 口がさっぱりする', '④ 歯みがき粉の味がした'],
+        answer: 1,
+        expl: 'みがけていない歯はザラザラ・ネバネバしています。これがプラーク（むし歯菌のかたまり）です！舌で歯の裏をさわってみよう。ツルツルになるまでみがくのが目標！'
+      },
+      {
+        type: '4choice',
+        text: '歯ブラシの力はどのくらいがいい？',
+        options: ['① ゴシゴシ強く', '② やさしく小刻みに', '③ 1本ずつゆっくり大きく', '④ どれでも変わらない'],
+        answer: 1,
+        expl: '強くこすると歯ぐきが傷つきます！やさしく小刻みに動かすのが正解。毛先を歯と歯ぐきの境目に当てて、2〜3mmの小さな動きでみがこう。力より「当てる場所」が大事です。'
+      }
+    ]
+  }
+];
+
+/* ======================================================
+   STATE
+   ====================================================== */
+const S = {
+  stageIdx: 0,
+  qIdx: 0,
+  scores: [0, 0, 0],
+  done: [false, false, false],
+  answered: false
+};
+
+/* ======================================================
+   SCREEN SWITCH
+   ====================================================== */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ======================================================
+   TITLE
+   ====================================================== */
+function goToTitle() {
+  S.scores = [0, 0, 0];
+  S.done   = [false, false, false];
+  S.stageIdx = 0;
+  S.qIdx     = 0;
+  show('screen-title');
+}
+
+/* ======================================================
+   STAGE SELECT
+   ====================================================== */
+function goToStageSelect() {
+  const wrap = document.getElementById('stage-cards');
+  wrap.innerHTML = '';
+
+  STAGES.forEach((st, idx) => {
+    const isDone = S.done[idx];
+    const card = document.createElement('button');
+    card.className = 'stage-card' + (isDone ? ' done' : '');
+    card.style.borderLeft = `5px solid ${st.borderColor}`;
+    card.innerHTML = `
+      <div class="sc-emoji">${st.emoji}</div>
+      <div class="sc-info">
+        <div class="sc-num">Stage ${st.num}</div>
+        <div class="sc-name">${st.title}</div>
+        <div class="sc-score${isDone ? ' done-score' : ''}">
+          ${isDone ? `✅ ${S.scores[idx]} / ${STAGES[idx].questions.length} せいかい` : `${STAGES[idx].questions.length}もん`}
+        </div>
+      </div>
+      <div class="sc-badge">${isDone ? '⭐' : '▶️'}</div>
+    `;
+    card.onclick = () => startStage(idx);
+    wrap.appendChild(card);
+  });
+
+  show('screen-stage-select');
+}
+
+/* ======================================================
+   QUIZ
+   ====================================================== */
+function startStage(idx) {
+  S.stageIdx = idx;
+  S.qIdx     = 0;
+  S.scores[idx] = 0;
+  renderQ();
+  show('screen-quiz');
+}
+
+function renderQ() {
+  const st = STAGES[S.stageIdx];
+  const q  = st.questions[S.qIdx];
+  const qNum = S.qIdx + 1;
+  const total = st.questions.length;
+
+  document.getElementById('quiz-stage-label').textContent = `Stage ${st.num}：${st.title}`;
+  document.getElementById('quiz-q-label').textContent     = `問 ${qNum} / ${total}`;
+  document.getElementById('progress-fill').style.width    = `${((qNum - 1) / total) * 100}%`;
+  document.getElementById('q-num-label').textContent      = `Q${qNum}`;
+  document.getElementById('q-text').textContent           = q.text;
+
+  const area = document.getElementById('answers-area');
+  area.innerHTML = '';
+  S.answered = false;
+
+  if (q.type === 'ox') {
+    const row = document.createElement('div');
+    row.className = 'answers-ox';
+    ['○', '×'].forEach((lbl, i) => {
+      const btn = mkAnswerBtn(lbl, () => pick(i, btn));
+      row.appendChild(btn);
+    });
+    area.appendChild(row);
+
+  } else if (q.type === '2choice') {
+    const row = document.createElement('div');
+    row.className = 'answers-2choice';
+    q.options.forEach((opt, i) => {
+      const btn = mkAnswerBtn(opt, () => pick(i, btn));
+      row.appendChild(btn);
+    });
+    area.appendChild(row);
+
+  } else {
+    const col = document.createElement('div');
+    col.className = 'answers-4choice';
+    q.options.forEach((opt, i) => {
+      const btn = mkAnswerBtn(opt, () => pick(i, btn));
+      col.appendChild(btn);
+    });
+    area.appendChild(col);
+  }
+}
+
+function mkAnswerBtn(text, onClick) {
+  const btn = document.createElement('button');
+  btn.className   = 'btn btn-answer';
+  btn.textContent = text;
+  btn.onclick     = onClick;
+  return btn;
+}
+
+function pick(selectedIdx, clickedBtn) {
+  if (S.answered) return;
+  S.answered = true;
+
+  const st = STAGES[S.stageIdx];
+  const q  = st.questions[S.qIdx];
+  const ok = selectedIdx === q.answer;
+
+  document.querySelectorAll('#answers-area .btn-answer').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer)                   btn.classList.add('correct-ans');
+    else if (btn === clickedBtn && !ok)   btn.classList.add('wrong-ans');
+    else                                  btn.classList.add('dimmed');
+  });
+
+  if (ok) {
+    S.scores[S.stageIdx]++;
+    spawnConfetti(40);
+  }
+
+  setTimeout(() => openFeedback(ok, q.expl), 550);
+}
+
+/* ======================================================
+   FEEDBACK
+   ====================================================== */
+function openFeedback(ok, expl) {
+  document.getElementById('fb-haku').textContent  = ok ? '🦷' : '🦷';
+  document.getElementById('fb-mark').textContent  = ok ? '⭕' : '❌';
+  document.getElementById('fb-label').textContent = ok ? 'やったね！🎉' : 'ざんねん！でも覚えよう！💪';
+  document.getElementById('fb-label').className   = 'fb-label ' + (ok ? 'ok' : 'ng');
+  document.getElementById('fb-explain').textContent = expl;
+  document.getElementById('feedback-overlay').classList.add('show');
+}
+
+document.getElementById('btn-next').onclick = function () {
+  document.getElementById('feedback-overlay').classList.remove('show');
+
+  const st = STAGES[S.stageIdx];
+  S.qIdx++;
+  if (S.qIdx >= st.questions.length) {
+    S.done[S.stageIdx] = true;
+    showStageClear();
+  } else {
+    renderQ();
+  }
+};
+
+/* ======================================================
+   STAGE CLEAR
+   ====================================================== */
+function showStageClear() {
+  const idx   = S.stageIdx;
+  const st    = STAGES[idx];
+  const score = S.scores[idx];
+
+  document.getElementById('sc-title').textContent = `Stage ${st.num} クリア！ 🎉`;
+  document.getElementById('sc-score').textContent = `${score} / ${st.questions.length} もん せいかい！`;
+
+  // Reset stars
+  document.querySelectorAll('#sc-stars .star').forEach(s => {
+    s.classList.remove('pop');
+    s.style.opacity   = '0';
+    s.style.transform = 'scale(0)';
+  });
+
+  // Pop stars in
+  setTimeout(() => {
+    document.querySelectorAll('#sc-stars .star').forEach((s, i) => {
+      setTimeout(() => s.classList.add('pop'), i * 200);
+    });
+  }, 200);
+
+  // Next button
+  const btn = document.getElementById('btn-stage-next');
+  const allDone = S.done.every(Boolean);
+  if (allDone) {
+    btn.textContent = '🏆 けっかをみる！';
+    btn.onclick     = showAllClear;
+  } else if (idx < STAGES.length - 1) {
+    btn.textContent = 'つぎのステージへ ▶';
+    btn.onclick     = () => startStage(idx + 1);
+  } else {
+    btn.textContent = 'ステージえらびに戻る';
+    btn.onclick     = goToStageSelect;
+  }
+
+  spawnConfetti(60);
+  show('screen-stage-clear');
+}
+
+/* ======================================================
+   ALL CLEAR
+   ====================================================== */
+function showAllClear() {
+  const total = S.scores.reduce((a, b) => a + b, 0);
+  const maxTotal = STAGES.reduce((a, st) => a + st.questions.length, 0);
+  document.getElementById('ac-score-num').textContent = `${total} / ${maxTotal}`;
+
+  const msgs = [
+    [20, '🌟 かんぺき！全問せいかい！\nあなたはむし歯ハカセだ！'],
+    [16, '😄 すごい！よく知ってたね！\n歯みがきも忘れずにね！'],
+    [12, '👍 よくがんばった！\nまた挑戦してみてね！'],
+    [0,  '💪 ファイト！また挑戦してみよう！\n歯みがきの大切さ、伝わったかな？']
+  ];
+  document.getElementById('ac-message').textContent =
+    msgs.find(([min]) => total >= min)[1];
+
+  spawnConfetti(90);
+  show('screen-all-clear');
+}
+
+/* ======================================================
+   CONFETTI
+   ====================================================== */
+function spawnConfetti(n) {
+  const wrap  = document.getElementById('confetti-wrap');
+  wrap.innerHTML = '';
+  const COLS  = ['#4FC3F7','#FFB300','#66BB6A','#AB47BC','#EF5350','#FF8F00','#fff','#F06292'];
+
+  for (let i = 0; i < n; i++) {
+    const el = document.createElement('div');
+    el.className = 'conf';
+    const size = 7 + Math.random() * 8;
+    el.style.cssText = `
+      left:${Math.random() * 100}vw;
+      width:${size}px; height:${size}px;
+      background:${COLS[Math.floor(Math.random() * COLS.length)]};
+      border-radius:${Math.random() > 0.45 ? '50%' : '2px'};
+      animation-duration:${1.4 + Math.random() * 2}s;
+      animation-delay:${Math.random() * 0.6}s;
+    `;
+    wrap.appendChild(el);
+  }
+  setTimeout(() => { wrap.innerHTML = ''; }, 3600);
+}
+</script>
+</body>
+</html>
