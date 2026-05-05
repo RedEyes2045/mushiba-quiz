@@ -288,17 +288,18 @@
 
     .answers-2choice {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: row;
+      gap: 12px;
     }
     .answers-2choice .btn-answer {
-      padding: 18px 14px;
+      flex: 1;
+      padding: 18px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      min-height: 100px;
+      gap: 10px;
+      min-height: 160px;
     }
     .choice-emoji { font-size: 52px; line-height: 1; display: block; }
     .choice-text  { font-size: 15px; text-align: center; white-space: pre-line; display: block; }
@@ -612,15 +613,15 @@ const STAGES = [
       {
         type: '4choice',
         text: 'むし歯菌が一番好きなものは？',
-        options: ['① 砂糖', '② 塩', '③ 野菜', '④ 辛いもの', '⑤ バスの中でぼ〜っとすること😴', '⑥ 友達のランドセルのにおい🎒'],
+        options: ['砂糖', '塩', 'バスの中でぼ〜っとすること😴', '野菜', '辛いもの', '友達のランドセルのにおい🎒'],
         answer: 0,
         expl: 'むし歯菌は甘いもの（砂糖）が大好き！砂糖を食べると酸を出して歯を攻撃します。'
       },
       {
         type: '4choice',
         text: '歯を溶かしているのは何？',
-        options: ['① バイキンそのもの', '② 酸（さん）', '③ 砂糖', '④ 歯ブラシ', '⑤ むし歯菌の応援歌🎤'],
-        answer: 1,
+        options: ['バイキンそのもの', 'むし歯菌の応援歌🎤', '酸（さん）', '砂糖', '歯ブラシ'],
+        answer: 2,
         expl: 'むし歯菌は砂糖を食べると「うんち」として酸（さん）を出します！このバイキンのうんちが歯のカルシウムを溶かしてむし歯にします。きたな〜い！だから砂糖が口の中に残らないよう歯みがきが大事なんです。'
       },
       {
@@ -633,14 +634,14 @@ const STAGES = [
       {
         type: '4choice',
         text: '食事のあと、むし歯菌が一番元気に酸を出す「危険タイム」は何分くらい？',
-        options: ['① 5分', '② 20〜30分', '③ 2時間', '④ 1日中', '⑤ きのうのおやつを思い出した瞬間だけ🍩'],
-        answer: 1,
+        options: ['5分', 'きのうのおやつを思い出した瞬間だけ🍩', '20〜30分', '2時間', '1日中'],
+        answer: 2,
         expl: '食事のあと約20〜30分、むし歯菌が猛烈に酸を出しています。この「危険タイム」のあとに歯みがきするのがベスト！'
       },
       {
         type: '4choice',
         text: 'むし歯菌が「うんち（酸）」を作るのに\n必要なものは？',
-        options: ['① 水', '② 砂糖（甘いもの）', '③ 塩', '④ 空気', '⑤ やる気と気合い💪'],
+        options: ['水', '砂糖（甘いもの）', '塩', 'やる気と気合い💪', '空気'],
         answer: 1,
         expl: 'むし歯菌が砂糖を食べるとうんち（酸）が出ます。砂糖がなければうんちも出ません！甘いものを食べたあとはすぐに歯みがきして、バイキンのご飯を取り上げよう！'
       },
@@ -662,49 +663,49 @@ const STAGES = [
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['くろくてつめた〜い\nあわあわのジュース🫧', 'ぎゅうにゅう🥛', '両方やめて宇宙水を飲む🌌'],
+        options: ['くろくてつめた〜い\nあわあわのジュース🫧', 'ぎゅうにゅう🥛'],
         answer: 0,
         expl: 'あわあわのお飲み物は砂糖がたっぷり＆酸性！歯にダブルパンチです。牛乳はカルシウムたっぷりで歯にやさしいです。'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['チーズ🧀', 'ねばねばくっつく\nキャンディー🍬', 'ぜんぶいっしょに食べたらどっちでもない🤤'],
+        options: ['チーズ🧀', 'ねばねばくっつく\nキャンディー🍬'],
         answer: 1,
         expl: 'ねばねばするお菓子は歯にくっついて長い時間砂糖が残ります。チーズはカルシウムが多くてむし歯になりにくい！'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['あまずっぱい\nオレンジのジュース🍊', 'むぎちゃ🍵', 'かなしくて涙しか飲まない😭'],
+        options: ['あまずっぱい\nオレンジのジュース🍊', 'むぎちゃ🍵'],
         answer: 0,
         expl: '果汁100%でも「果糖（かとう）」という天然の糖分がたっぷり！砂糖と違う糖分でも、むし歯菌はちゃんと食べてうんち（酸）を出します。「砂糖ゼロ」でも油断禁物！麦茶は糖分ゼロで歯にやさしいです。'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['しょうゆのおせんべい🍘', 'やわらかくてあま〜い\n茶色のチョコ系おかし🍫', 'がまんしてどちらも食べない🙅'],
+        options: ['しょうゆのおせんべい🍘', 'やわらかくてあま〜い\n茶色のチョコ系おかし🍫'],
         answer: 1,
         expl: 'チョコ系のお菓子は砂糖が多く歯にくっつきやすいです。おせんべいは砂糖が少なめ。でも食べたらどちらも歯みがきしてね！'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['カラフルなグミ🐻', 'ナッツ（くるみ・アーモンド）🥜', 'カエルのプールの水を飲む🐸'],
+        options: ['カラフルなグミ🐻', 'ナッツ（くるみ・アーモンド）🥜'],
         answer: 0,
         expl: 'グミはねばねばして歯のすき間に残りやすい！ナッツは糖分が少なくむし歯になりにくいですが、かみ砕くので食べすぎ注意。'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['おみず💧', '白くてあまい\n体にいいイメージの乳酸菌のみもの🥛', 'どちらも飲まずにそのままねる😴'],
+        options: ['おみず💧', '白くてあまい\n体にいいイメージの乳酸菌のみもの🥛'],
         answer: 1,
         expl: '乳酸菌飲料は腸にいいイメージだけど、砂糖がたっぷり入っています！むし歯菌のエサになるので飲んだあとは歯みがき必須。お水は糖分ゼロで、歯にとって一番やさしい飲み物です。'
       },
       {
         type: '2choice',
         text: 'どっちがむし歯になりやすい？',
-        options: ['ふわふわの白いパン🍞', 'かたゆでたまご🥚', 'どちらでもなくサラダを食べる（えらい！）🥗'],
+        options: ['ふわふわの白いパン🍞', 'かたゆでたまご🥚'],
         answer: 0,
         expl: 'パンは歯にくっつきやすく、でんぷんが口の中で糖に変わってむし歯菌のエサになります。たまごは糖分がほぼゼロ！おかずとしておすすめです。'
       }
@@ -719,49 +720,42 @@ const STAGES = [
       {
         type: '4choice',
         text: '歯みがきの一番の目的は？',
-        options: ['① 歯をピカピカにする', '② むし歯菌を口の外に出す', '③ 口をさっぱりさせる', '④ 歯を硬くする', '⑤ 歯ブラシのおじさんを笑顔にするため👴'],
+        options: ['歯をピカピカにする', 'むし歯菌を口の外に出す', '歯ブラシのおじさんを笑顔にするため👴', '口をさっぱりさせる', '歯を硬くする'],
         answer: 1,
         expl: '歯みがきの目的は「むし歯菌のかたまり（プラーク）を歯からはがして外に出すこと」！ぬらすだけでなく、ちゃんとこすらないとバイキンは取れません。'
       },
       {
         type: '4choice',
-        text: 'むし歯菌が一番たまりやすい場所は？',
-        options: ['① 前歯の表', '② 歯と歯ぐきの境目', '③ 舌の上', '④ ほっぺの内側', '⑤ 給食のあとのランドセルの中📚'],
-        answer: 1,
-        expl: '歯と歯ぐきの「境目」はバイキンが一番集まる場所！歯ブラシを45度に傾けてやさしく小刻みにみがこう。'
-      },
-      {
-        type: '4choice',
         text: '夜ねる前の歯みがきが\n一番大事な理由は？',
-        options: ['① 夜の方が時間があるから', '② ねている間はつばが減るから', '③ 夜の方がバイキンが増えやすいから', '④ 起きてる時と変わらない', '⑤ パパのいびきがうるさくて眠れないから🔊'],
-        answer: 1,
+        options: ['パパのいびきがうるさくて眠れないから🔊', '夜の方が時間があるから', 'ねている間はつばが減るから', '夜の方がバイキンが増えやすいから', '起きてる時と変わらない'],
+        answer: 2,
         expl: 'つば（唾液）はむし歯菌をやっつける力があります！でも寝ている間はつばが減って口の中がバイキン天国に。だから寝る前の歯みがきが最重要！'
       },
       {
         type: '4choice',
         text: 'フッ素入り歯みがき粉の\n効果は？',
-        options: ['① 歯を白くする', '② 口が爽やかになる', '③ 歯を強くして酸に溶けにくくする', '④ バイキンを全部殺す', '⑤ フッ素がキラキラ光ってバイキンをビビらせる✨'],
-        answer: 2,
+        options: ['歯を白くする', 'フッ素がキラキラ光ってバイキンをビビらせる✨', '口が爽やかになる', '歯を強くして酸に溶けにくくする', 'バイキンを全部殺す'],
+        answer: 3,
         expl: 'フッ素は歯の表面を強くして、酸に溶けにくくする力があります。むし歯菌を直接やっつけるわけじゃないけど、歯を守る「よろい」になってくれます！'
       },
       {
         type: '4choice',
         text: '歯みがきしても「みがけていないサイン」はどれ？',
-        options: ['① 歯がツルツルする', '② 歯がザラザラ・ネバネバしている', '③ 口がさっぱりする', '④ 歯みがき粉の味がした', '⑤ 歯が「もうやめて！」って泣いている🦷😭'],
-        answer: 1,
+        options: ['歯がツルツルする', '歯が「もうやめて！」って泣いている🦷😭', '口がさっぱりする', '歯がザラザラ・ネバネバしている', '歯みがき粉の味がした'],
+        answer: 3,
         expl: 'みがけていない歯はザラザラ・ネバネバしています。これがプラーク（むし歯菌のかたまり）です！舌で歯の裏をさわってみよう。ツルツルになるまでみがくのが目標！'
       },
       {
         type: '4choice',
         text: '歯ブラシの力はどのくらいがいい？',
-        options: ['① ゴシゴシ強く', '② やさしく小刻みに', '③ 1本ずつゆっくり大きく', '④ どれでも変わらない', '⑤ 全力で噛みちぎる🦷💥'],
+        options: ['ゴシゴシ強く', 'やさしく小刻みに', '全力で噛みちぎる🦷💥', '1本ずつゆっくり大きく', 'どれでも変わらない'],
         answer: 1,
         expl: '強くこすると歯ぐきが傷つきます！やさしく小刻みに動かすのが正解。毛先を歯と歯ぐきの境目に当てて、2〜3mmの小さな動きでみがこう。力より「当てる場所」が大事です。'
       },
       {
         type: '4choice',
         text: 'むし歯のできやすいところは\nどこ？',
-        options: ['① 歯の付け根', '② 歯と歯の間', '③ 歯のみぞ', '④ 全部！', '⑤ むし歯は給食のそばにすんでいる🍱'],
+        options: ['歯の付け根', '歯と歯の間', '歯のみぞ', '全部！'],
         answer: 3,
         expl: '「歯の付け根」「歯と歯の間」「歯のみぞ（溝）」、この3か所すべてがむし歯になりやすいポイント！歯みがきの時は特にていねいにみがこう。フロスや歯間ブラシも使うとバッチリ！'
       }
@@ -777,7 +771,8 @@ const S = {
   qIdx: 0,
   scores: [0, 0, 0],
   done: [false, false, false],
-  answered: false
+  answered: false,
+  displayAnswer: 0
 };
 
 /* ======================================================
@@ -858,6 +853,7 @@ function renderQ() {
   S.answered = false;
 
   if (q.type === 'ox') {
+    S.displayAnswer = q.answer;
     const col = document.createElement('div');
     col.className = 'answers-ox';
     q.options.forEach((opt, i) => {
@@ -869,6 +865,7 @@ function renderQ() {
     area.appendChild(col);
 
   } else if (q.type === '2choice') {
+    S.displayAnswer = q.answer;
     const col = document.createElement('div');
     col.className = 'answers-2choice';
     q.options.forEach((opt, i) => {
@@ -878,10 +875,16 @@ function renderQ() {
     area.appendChild(col);
 
   } else {
+    const indexed = q.options.map((text, i) => ({ text, isAns: i === q.answer }));
+    for (let i = indexed.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+    }
+    S.displayAnswer = indexed.findIndex(o => o.isAns);
     const col = document.createElement('div');
     col.className = 'answers-4choice';
-    q.options.forEach((opt, i) => {
-      const btn = mkAnswerBtn(opt, () => pick(i, btn));
+    indexed.forEach((o, i) => {
+      const btn = mkAnswerBtn(o.text, () => pick(i, btn));
       col.appendChild(btn);
     });
     area.appendChild(col);
@@ -920,13 +923,13 @@ function pick(selectedIdx, clickedBtn) {
 
   const st = STAGES[S.stageIdx];
   const q  = st.questions[S.qIdx];
-  const ok = selectedIdx === q.answer;
+  const ok = selectedIdx === S.displayAnswer;
 
   document.querySelectorAll('#answers-area .btn-answer').forEach((btn, i) => {
     btn.disabled = true;
-    if (i === q.answer)                   btn.classList.add('correct-ans');
-    else if (btn === clickedBtn && !ok)   btn.classList.add('wrong-ans');
-    else                                  btn.classList.add('dimmed');
+    if (i === S.displayAnswer)             btn.classList.add('correct-ans');
+    else if (btn === clickedBtn && !ok)    btn.classList.add('wrong-ans');
+    else                                   btn.classList.add('dimmed');
   });
 
   if (ok) {
@@ -943,7 +946,7 @@ function pick(selectedIdx, clickedBtn) {
 function openFeedback(ok, expl) {
   document.getElementById('fb-haku').textContent  = ok ? '🦷' : '🦷';
   document.getElementById('fb-mark').textContent  = ok ? '⭕' : '❌';
-  document.getElementById('fb-label').textContent = ok ? 'やったね！🎉' : 'ざんねん！でも覚えよう！💪';
+  document.getElementById('fb-label').textContent = ok ? 'やったね！🎉' : 'ざんねん！ハズレ！';
   document.getElementById('fb-label').className   = 'fb-label ' + (ok ? 'ok' : 'ng');
   document.getElementById('fb-explain').textContent = expl;
   document.getElementById('feedback-overlay').classList.add('show');
